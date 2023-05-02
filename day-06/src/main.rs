@@ -28,12 +28,7 @@ fn process_part2(input: &str) -> String {
 
     stream.windows(WINDOW_SIZE).any(|window| {
         marker += 1;
-        for i in 1..WINDOW_SIZE {
-            if window.get(i..).unwrap().contains(&window[i - 1]) {
-                return false;
-            }
-        }
-        return true;
+        return (1..WINDOW_SIZE).all(|i| !window.get(i..).unwrap().contains(&window[i - 1]));
     });
 
     return marker.to_string();
