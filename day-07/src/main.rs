@@ -110,7 +110,7 @@ fn process_part2(input: &str) -> String {
             path.clone()
                 .into_iter()
                 .fold("/".to_string(), |mut path, dir| {
-                    if path != "".to_string() && path != "/".to_string() {
+                    if path != "/".to_string() {
                         path.push_str("/");
                     }
                     path.push_str(&dir);
@@ -124,12 +124,10 @@ fn process_part2(input: &str) -> String {
 
     const TOTAL_SIZE: usize = 70_000_000;
     const REQUIRED_SPACE: usize = 30_000_000;
-    let used_space = directories
-        .clone()
-        .into_iter()
-        .filter(|(dir_name, _)| dir_name == "/")
-        .map(|(_, dir_size)| dir_size)
-        .sum::<usize>();
+    let used_space = match directories.get("/") {
+        Some(size) => size,
+        None => &0,
+    };
     let available_space = TOTAL_SIZE - used_space;
     let need_to_free = REQUIRED_SPACE - available_space;
     let mut possible_directories = directories
